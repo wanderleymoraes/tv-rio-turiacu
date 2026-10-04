@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TV Rio Turiaçu - Assistente</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,Segoe UI,Roboto,sans-serif;height:100vh;overflow:hidden;color:#fff;
+ background:#0a3a8a url('fundo.jpg') center/cover no-repeat}
+.menu{position:absolute;left:24px;top:60px;width:230px;padding:14px;border-radius:20px;background:rgba(10,40,120,.75);backdrop-filter:blur(8px)}
+.menu a{display:block;padding:12px 14px;border-radius:12px;color:#fff;text-decoration:none;font-weight:600}
+.menu a.on{background:#1e5cff}
+.logo{position:absolute;left:50%;top:40px;transform:translateX(-50%);text-align:center}
+.logo img{max-width:280px;max-height:200px}
+.logo h1{font-size:2.2rem;letter-spacing:1px;text-shadow:0 2px 8px #003}
+#chat{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);width:min(640px,90vw);max-height:40vh;overflow:auto;background:rgba(255,255,255,.92);color:#123;border-radius:16px;padding:12px;display:none}
+#chat p{margin:6px 0}#chat .u{font-weight:700}
+.bar{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);width:min(700px,92vw);display:flex;gap:8px;background:#fff;border-radius:40px;padding:8px 10px}
+.bar input{flex:1;border:0;outline:0;font-size:1rem;padding:8px 12px;color:#123}
+.bar button{border:0;border-radius:50%;width:44px;height:44px;background:#1e5cff;color:#fff;font-size:1.2rem;cursor:pointer}
+@media(max-width:800px){.menu{display:none}}
+</style>
+</head>
+<body>
+<nav class="menu"><a class="on" href="#">Início</a><a href="#">Notícias</a><a href="#">Programação</a><a href="#">Nossa Cidade</a><a href="#">Região</a><a href="#">Conversar</a><a href="#">Perguntas Frequentes</a></nav>
+<div class="logo"><img src="logo.jpg" alt="TV Rio Turiaçu"></div>
+<div id="chat"></div>
+<form class="bar" id="f"><input id="q" placeholder="Digite sua pergunta..." autocomplete="off"><button type="submit" title="Enviar">&#10148;</button></form>
+<elevenlabs-convai id="w" agent-id="agent_7101m43ye5r2ehgs86frt0yks5fs" style="position:absolute;bottom:20px;right:20px;z-index:99"></elevenlabs-convai>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async></script>
+<script>
+// Texto: envia a pergunta para o widget do ElevenLabs (agente da TV Rio Turiaçu)
+const f=document.getElementById('f'),q=document.getElementById('q'),chat=document.getElementById('chat'),w=document.getElementById('w');
+w.addEventListener('elevenlabs-convai:call',e=>{});
+f.addEventListener('submit',ev=>{ev.preventDefault();const t=q.value.trim();if(!t)return;
+ chat.style.display='block';chat.insertAdjacentHTML('beforeend','<p class="u"></p>');chat.lastChild.textContent='Você: '+t;
+ try{w.dispatchEvent(new CustomEvent('elevenlabs-agent:send-text',{detail:{text:t}}))}catch(e){}
+ q.value='';});
+</script>
+</body>
+</html>
